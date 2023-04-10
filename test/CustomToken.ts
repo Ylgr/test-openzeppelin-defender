@@ -1,7 +1,7 @@
 import {Wallet} from "ethers";
 
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 import { CustomToken} from "../typechain-types";
 
 describe("CustomToken", () => {
@@ -12,8 +12,8 @@ describe("CustomToken", () => {
     beforeEach(async () => {
         CustomToken = await ethers.getContractFactory("CustomToken");
         [admin, addr1, addr2] = await ethers.getSigners();
-        customToken = await CustomToken.deploy();
-        await customToken.initialize("CustomToken", "CTK", initialSupply, mintInterval);
+        customToken = await upgrades.deployProxy(CustomToken, ["CustomToken", "CTK", initialSupply, mintInterval], { initializer: "initialize" });
+        await customToken.deployed();
     });
 
     describe("Deployment", () => {
@@ -27,6 +27,19 @@ describe("CustomToken", () => {
 
         it("Should assign the initial supply to the admin", async () => {
             expect(await customToken.balanceOf(admin.address)).to.equal(initialSupply);
+        });
+    });
+
+    describe("Upgrade", () => {
+        it("Should upgrade the contract", async () => {
+            const maxSupply = 10000;
+            const CustomTokenV2 = await ethers.getContractFactory("CustomTokenV2");
+            const customTokenV2 = await upgrades.upgradeProxy(customToken.address, CustomTokenV2);
+            await customTokenV2.deployed();
+            await customTokenV2.initializeV2("CustomTokenV2", "CTK2", maxSupply, mintInterval, maxSupply);
+            expect(await customTokenV2.maxSupply()).to.equal(maxSupply);
+            expect(await customTokenV2.name()).to.equal("CustomTokenV2");
+            expect(await customTokenV2.symbol()).to.equal("CTK2");
         });
     });
 });

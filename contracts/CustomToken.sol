@@ -35,7 +35,7 @@ contract CustomToken is Initializable, ERC20Upgradeable {
         emit AdminChanged(newAdmin);
     }
 
-    function mint(address to, uint256 amount) public onlyAdmin {
+    function mint(address to, uint256 amount) public virtual onlyAdmin {
         require(block.timestamp >= lastMintTimestamp + mintInterval, "CustomToken: Mint interval not reached");
         lastMintTimestamp = block.timestamp;
         _mint(to, amount);
