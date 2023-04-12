@@ -1,0 +1,30 @@
+name: Deploy to Tenderly
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  TENDERLY_API_KEY: ${{ secrets.TENDERLY_API_KEY }}
+  NETWORK: ropsten
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
+      - name: Deploy contracts to Tenderly
+        run: npx hardhat run scripts/deploy.js --network ${{ env.NETWORK }} --tenderly true
+
+      - name: Verify contracts on Tenderly
+        run: npx hardhat verify --network ${{ env.NETWORK }} --tenderly true
