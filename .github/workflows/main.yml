@@ -25,7 +25,7 @@ jobs:
         run: yarn install
 
       - name: Run tests
-        run: yarn run test:devnet
+        run: yarn run tes
         env:
           TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}

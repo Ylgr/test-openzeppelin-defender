@@ -12,7 +12,7 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: true
     },
     devnet: {
-      url: "https://rpc.vnet.tenderly.co/devnet/my-first-devnet/6af0eded-2bc0-44af-80f6-6dfc0dcf72f5",
+      url: "https://rpc.vnet.tenderly.co/devnet/my-first-devnet/809ab2b5-9c3a-4889-852f-572a6685034c",
       chainId: 56,
     },
     testnet: {
