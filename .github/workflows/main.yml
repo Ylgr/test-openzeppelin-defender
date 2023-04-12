@@ -28,3 +28,7 @@ jobs:
         run: yarn run test:devnet
         env:
           TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          DEFENDER_API_KEY: ${{ secrets.DEFENDER_API_KEY }}
+          DEFENDER_SECRET_KEY: ${{ secrets.DEFENDER_SECRET_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}

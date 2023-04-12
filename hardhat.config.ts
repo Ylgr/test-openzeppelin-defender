@@ -18,20 +18,20 @@ const config: HardhatUserConfig = {
     testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
-      accounts: [process.env.PRIVATE_KEY || ''],
+      accounts: [process.env.PRIVATE_KEY as string],
     },
     mainnet: {
       url: "https://bsc-dataseed.binance.org/",
       chainId: 56,
-      accounts: [process.env.PRIVATE_KEY || ''],
+      accounts: [process.env.PRIVATE_KEY as string],
     }
   },
   defender: {
-    apiKey: process.env.DEFENDER_API_KEY || '',
-    apiSecret: process.env.DEFENDER_SECRET_KEY || ''
+    apiKey: process.env.DEFENDER_API_KEY as string,
+    apiSecret: process.env.DEFENDER_SECRET_KEY as string
   },
   etherscan: {
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.API_KEY as string,
   },
 };
 
