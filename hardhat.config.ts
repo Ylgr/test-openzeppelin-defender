@@ -11,11 +11,14 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true
     },
+    devnet: {
+      url: "https://rpc.vnet.tenderly.co/devnet/my-first-devnet/6af0eded-2bc0-44af-80f6-6dfc0dcf72f5",
+      chainId: 56,
+    },
     testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
-      // accounts: [process.env.PRIVATE_KEY as string],
-      accounts: [process.env.PRIVATE_KEY_2 as string],
+      accounts: [process.env.PRIVATE_KEY as string],
     },
     mainnet: {
       url: "https://bsc-dataseed.binance.org/",

@@ -1,35 +1,35 @@
-name: Deploy to Tenderly
+name: Smart Contract CI
 
 on:
   push:
     branches:
       - master
-
-env:
-  TENDERLY_API_KEY: ${{ secrets.TENDERLY_API_KEY }}
-  NETWORK: ropsten
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: 16
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
+        working-directory: ./CI-project
 
-      - name: Compile contracts
-        run: npx hardhat compile
+      - name: Install Tenderly CLI
+        run: curl <https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-linux.sh> | sudo sh
 
-      - name: Deploy contracts to Tenderly
-        run: npx hardhat run scripts/deploy.js --network ${{ env.NETWORK }} --tenderly true
-
-      - name: Verify contracts on Tenderly
-        run: npx hardhat verify --network ${{ env.NETWORK }} --tenderly true
+      - name: Run tests
+        run: yarn run test:devnet
+        working-directory: ./CI-project
+        env:
+          TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
