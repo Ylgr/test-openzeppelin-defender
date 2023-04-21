@@ -3,6 +3,8 @@ import "@nomicfoundation/hardhat-toolbox";
 import '@openzeppelin/hardhat-upgrades';
 import '@openzeppelin/hardhat-defender';
 import dotenv from "dotenv";
+// import * as tdly from "@tenderly/hardhat-tenderly";
+// tdly.setup();
 dotenv.config();
 
 const config: HardhatUserConfig = {
@@ -12,7 +14,7 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: true
     },
     devnet: {
-      url: "https://rpc.vnet.tenderly.co/devnet/my-first-devnet/809ab2b5-9c3a-4889-852f-572a6685034c",
+      url: "https://rpc.tenderly.co/fork/03e762ff-7ee2-4ce2-a3d0-b747e67c31d0",
       chainId: 56,
     },
     testnet: {

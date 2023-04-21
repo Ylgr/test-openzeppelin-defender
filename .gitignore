@@ -10,3 +10,6 @@ cache
 artifacts
 
 .idea
+
+# hardhat-tenderly plugin
+deployments
