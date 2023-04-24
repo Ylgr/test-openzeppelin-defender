@@ -37,6 +37,7 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "test:TokenMetaTx": "hardhat test --grep TokenMetaTx",
+    "test:NftFactory": "hardhat test --grep NftFactory",
     "coverage": "hardhat coverage",
     "test:devnet": "hardhat test --network devnet",
     "deploy:testnet": "hardhat run --network testnet scripts/deploy.ts"
