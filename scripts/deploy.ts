@@ -1,4 +1,4 @@
-import { ethers, upgrades, defender } from "hardhat";
+import { ethers, upgrades, defender, run } from "hardhat";
 import {writeFileSync} from "fs";
 const {
     DefenderRelayProvider,
@@ -33,12 +33,27 @@ async function main() {
         .deploy()
         .then((f) => f.deployed())
 
+    try {
+        await run('verify:verify', {
+            address: forwarder.address,
+            constructorArguments: [],
+        })
+    } catch (e) {
+        console.log(e)
+    }
     const TokenMetaTx = await ethers.getContractFactory('TokenMetaTx')
     const tokenMetaTx = await TokenMetaTx.connect(relaySigner)
         .deploy(initialSupply, forwarder.address)
         .then((f) => f.deployed())
 
-
+    try {
+        await run('verify:verify', {
+            address: tokenMetaTx.address,
+            constructorArguments: [initialSupply, forwarder.address],
+        })
+    } catch (e) {
+        console.log(e)
+    }
     writeFileSync(
         'deploy.json',
         JSON.stringify(
