@@ -28,6 +28,7 @@
     "@openzeppelin/contracts": "^4.8.2",
     "@openzeppelin/contracts-upgradeable": "^4.8.2",
     "@openzeppelin/hardhat-defender": "^1.8.2",
+    "defender-relay-client": "^1.42.0",
     "dotenv": "^16.0.3"
   },
   "scripts": {
@@ -35,6 +36,7 @@
     "test": "hardhat test",
     "test:TokenMetaTx": "hardhat test --grep TokenMetaTx",
     "coverage": "hardhat coverage",
-    "test:devnet": "hardhat test --network devnet"
+    "test:devnet": "hardhat test --network devnet",
+    "deploy:testnet": "hardhat run --network testnet scripts/deploy.ts"
   }
 }
