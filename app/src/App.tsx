@@ -1,24 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Button} from "react-bootstrap";
+import { ethers } from "ethers";
+import SimpleNftAbi from "./abi/SimpleNft.json";
 
 function App() {
+    // @ts-ignore
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract("0x5FbDB2315678afecb367f032d93F642f64180aa3", SimpleNftAbi, signer);
+
+    const createNft = async () => {
+        const tx = await contract.createNft();
+        console.log(tx);
+    }
+
+    const createNftZeroFee = async () => {
+    }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Button variant="primary" onClick={() => createNft()}>Create Nft</Button>
+      <Button variant="info" onClick={() => createNftZeroFee()}>Create Nft Zero fee</Button>
     </div>
   );
 }
