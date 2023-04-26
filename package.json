@@ -28,10 +28,16 @@
     "@openzeppelin/contracts": "^4.8.2",
     "@openzeppelin/contracts-upgradeable": "^4.8.2",
     "@openzeppelin/hardhat-defender": "^1.8.2",
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "bootstrap": "^5.2.3",
+    "builtin-modules": "^3.3.0",
+    "defender-autotask-client": "^1.42.0",
     "defender-relay-client": "^1.42.0",
     "dotenv": "^16.0.3",
-    "react-bootstrap": "^2.7.4"
+    "react-bootstrap": "^2.7.4",
+    "rollup": "^3.21.0"
   },
   "scripts": {
     "compile": "hardhat compile",
@@ -41,6 +47,8 @@
     "test:SimpleNftFactory": "hardhat test --grep SimpleNftFactory",
     "coverage": "hardhat coverage",
     "test:devnet": "hardhat test --network devnet",
-    "deploy:testnet": "hardhat run --network testnet scripts/deploy.ts"
+    "deploy:testnet": "hardhat run --network testnet scripts/deploy.ts",
+    "build": "rollup -c --bundleConfigAsCjs",
+    "create-autotask": "yarn build && npx ts-node scripts/create-autotask.ts"
   }
 }

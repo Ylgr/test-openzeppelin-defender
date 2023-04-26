@@ -13,3 +13,4 @@ artifacts
 
 # hardhat-tenderly plugin
 deployments
+build
