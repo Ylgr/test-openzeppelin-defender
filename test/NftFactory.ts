@@ -65,6 +65,9 @@ describe("NftFactory", () => {
         });
 
         it('user 1 can create NFT 2 with zero fee using meta-transaction', async () => {
+            // expect owner has DEFAULT_ADMIN_ROLE
+            expect(await nftFactory.hasRole(await nftFactory.DEFAULT_ADMIN_ROLE(), owner.address)).to.equal(true);
+
             await nftFactory.grantRole(await nftFactory.MINTER_ROLE(), user1.address);
 
             expect(await ethers.provider.getBalance(user1.address)).to.equal(0);

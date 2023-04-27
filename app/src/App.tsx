@@ -4,12 +4,14 @@ import {Button} from "react-bootstrap";
 import { ethers } from "ethers";
 import MinimalForwarderAbi from "./abi/MinimalForwarder.json";
 import SimpleNftFactoryAbi from "./abi/SimpleNftFactory.json";
+import NftFactoryAbi from "./abi/NftFactory.json";
 
 function App() {
     // @ts-ignore
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const nftFactory = new ethers.Contract(process.env.REACT_APP_SIMPLE_NFT_FACTORY_ADDRESS as string, SimpleNftFactoryAbi, signer);
+    // const nftFactory = new ethers.Contract(process.env.REACT_APP_SIMPLE_NFT_FACTORY_ADDRESS as string, SimpleNftFactoryAbi, signer);
+    const nftFactory = new ethers.Contract(process.env.REACT_APP_NFT_FACTORY_ADDRESS as string, NftFactoryAbi, signer);
     const forwarder = new ethers.Contract(process.env.REACT_APP_MINIMAL_FORWARDER_ADDRESS as string, MinimalForwarderAbi, signer);
     const [isConnected, setIsConnected] = React.useState(false);
     const createNft = async () => {
