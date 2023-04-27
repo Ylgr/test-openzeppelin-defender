@@ -6,7 +6,7 @@ import "./NftFactory.sol";
 contract NftFactoryV2 is NftFactory {
     event Log(string message);
 
-    constructor(MinimalForwarderUpgradeable forwarder) NftFactory(forwarder) {}
+    constructor(MinimalForwarder forwarder) NftFactory(forwarder) {}
 
     function initializeV2() public reinitializer(2) {
         initialize();

@@ -5,14 +5,14 @@ import "./SimpleNft.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/metatx/MinimalForwarderUpgradeable.sol";
+import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
 
 contract NftFactory is Initializable, AccessControlUpgradeable, ERC2771ContextUpgradeable {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     event NftCreated(address indexed nftAddress, address indexed owner);
 
-    constructor(MinimalForwarderUpgradeable forwarder) ERC2771ContextUpgradeable(address(forwarder)) {}
+    constructor(MinimalForwarder forwarder) ERC2771ContextUpgradeable(address(forwarder)) {}
 
     function initialize() public initializer {
         __AccessControl_init();

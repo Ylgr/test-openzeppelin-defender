@@ -83,7 +83,7 @@ function App() {
         <br/>
       <Button variant="primary" onClick={() => createNft()} disabled={!isConnected}>Create Nft</Button>
       <Button variant="info" onClick={() => createNftZeroFee()} disabled={!isConnected}>Create Nft Zero fee</Button>
-      <Button variant="warning" onClick={() => getTx('0x238c1d400641c9c8051d1b9835074b6a29cd9e1240c4d44b838059d153458bdb')} disabled={!isConnected}>Get Tx</Button>
+      <Button variant="warning" onClick={() => getTx('0xe36a344481c961cd3a8e3a6066422a0a028dcb70711a3640e674915d73b67ce9')} disabled={!isConnected}>Get Tx</Button>
     </div>
   );
 }

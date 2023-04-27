@@ -71,7 +71,6 @@ describe("TokenMetaTx", () => {
 
         const result = await forwarder.execute(request, signature);
 
-        await result.wait();
         expect(result).to.emit(token, "Transfer").withArgs(user1.address, user2.address, 10);
 
 

@@ -17,7 +17,6 @@ describe("SimpleNftFactory", () => {
 
         forwarder = await ethers.getContractFactory("MinimalForwarder").then((factory) => factory.deploy());
 
-
         nftFactory = await NftFactory.deploy(forwarder.address);
         await nftFactory.deployed();
     });
@@ -33,13 +32,15 @@ describe("SimpleNftFactory", () => {
         });
 
         it('should create a new NFT by user 1 with zero fee transaction', async function () {
+            // add minter role for user1
+            await nftFactory.grantRole(await nftFactory.MINTER_ROLE(), user1.address);
 
             expect(await ethers.provider.getBalance(user1.address)).to.equal(0);
             const data = nftFactory.interface.encodeFunctionData('createNft', ["NFT3", "NFT3", user1.address]);
             const chainId = (await ethers.provider.getNetwork()).chainId;
             const request = {
                 value: 0,
-                gas: 1e6,
+                gas: 10e6,
                 nonce: (await forwarder.getNonce(user1.address)).toString(),
                 from: user1.address,
                 to: nftFactory.address,
@@ -69,18 +70,15 @@ describe("SimpleNftFactory", () => {
             }
 
             const signature = await user1._signTypedData(domain, types, request);
-
-            console.log('owner.address: ', owner.address)
-            console.log('user1.address: ', user1.address)
-            console.log('user2.address: ', user2.address)
-            const recoveredAddress = ethers.utils.verifyTypedData(domain, types, request, signature);
-            console.log('recoveredAddress: ', recoveredAddress)
             const receipt = await forwarder.execute(request, signature).then((tx: any) => tx.wait());
-            const nftAddress = receipt.events.find((x: any) => (x.event === "NftCreated" && x.address === nftFactory.address)).args.nftAddress
+            const nftAddress = receipt.logs
+                .filter((x: any) => x.address.toLowerCase() === nftFactory.address.toLowerCase())
+                .map((x: any) => nftFactory.interface.parseLog(x))
+                .find((x: any) => x.name === "NftCreated").args.nftAddress;
             const nft = await ethers.getContractAt("SimpleNft", nftAddress);
             expect(await nft.name()).to.equal("NFT3");
             expect(await nft.symbol()).to.equal("NFT3");
-            expect(await nft.owner()).to.equal(user1.getAddress());
+            expect(await nft.owner()).to.equal(user1.address);
         });
     });
 });
