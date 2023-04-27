@@ -12,7 +12,7 @@ async function main() {
         speed: 'fast',
     })
 
-    const NftFactory = await ethers.getContractFactory('SimpleNftFactory');
+    const NftFactory = await ethers.getContractFactory('NftFactory');
     const nftFactory = await upgrades.deployProxy(NftFactory.connect(relaySigner), [], {
         constructorArgs: [deploy2.MinimalForwarder],
         unsafeAllow: ["constructor"]
