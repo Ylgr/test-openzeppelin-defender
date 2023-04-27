@@ -22,12 +22,11 @@ function App() {
         const url = process.env.REACT_APP_WEBHOOK_URL;
         if (!url) throw new Error(`Missing relayer url`);
         const userAddress = await signer.getAddress();
-
         const data = nftFactory.interface.encodeFunctionData('createNft', ["Test NFT Relay Zero Fee", "TRZF", userAddress]);
-        const chainId = await provider.getNetwork().then(network => network.chainId);
+        const chainId = (await provider.getNetwork()).chainId;
         const request = {
             value: 0,
-            gas: 1e6,
+            gas: 10e6,
             nonce: (await forwarder.getNonce(userAddress)).toString(),
             from: userAddress,
             to: nftFactory.address,
@@ -53,9 +52,24 @@ function App() {
         const signature = await signer._signTypedData(domain, types, request);
         return fetch(url, {
             method: 'POST',
-            body: JSON.stringify({request, signature}),
+            body: JSON.stringify({ signature, request }),
             headers: { 'Content-Type': 'application/json' },
         });
+    }
+
+    const getTx = async (txHash: string) => {
+        const tx = await provider.getTransaction(txHash).then(tx => tx.wait());
+        console.log(tx);
+        try {
+            const code = await provider.call(tx, tx.blockNumber);
+            console.log({code});
+        } catch (err) {
+            // @ts-ignore
+            const code = err.data.replace('Reverted ','');
+            console.log({err});
+            let reason = ethers.utils.toUtf8String('0x' + code.substr(138));
+            console.log('revert reason:', reason);
+        }
     }
 
     return (
@@ -69,6 +83,7 @@ function App() {
         <br/>
       <Button variant="primary" onClick={() => createNft()} disabled={!isConnected}>Create Nft</Button>
       <Button variant="info" onClick={() => createNftZeroFee()} disabled={!isConnected}>Create Nft Zero fee</Button>
+      <Button variant="warning" onClick={() => getTx('0x238c1d400641c9c8051d1b9835074b6a29cd9e1240c4d44b838059d153458bdb')} disabled={!isConnected}>Get Tx</Button>
     </div>
   );
 }
